@@ -22,17 +22,16 @@ Arguments:
     -v, --verbose Optional. Enables debug-level logging.
 """
 
-import os
 import sys
-import requests
 import argparse
 import logging
 import json
-from concurrent.futures import ThreadPoolExecutor
-from PIL import Image
 from io import BytesIO
 import urllib.parse
-    
+import requests
+from PIL import Image
+
+
 ISSUU_URL = 'https://issuu.com/'
 HEADERS = {
     'User-Agent':'issuu-dl'
@@ -54,8 +53,7 @@ def download_image(session: requests.Session, url: str) -> BytesIO | None:
     logging.debug("Downloading image: %s", url)
     if resp.status_code == 200:
         return BytesIO(resp.content)
-    else:
-        logging.error("Image URL %s received bad status code %s", url, resp.status_code)
+    logging.error("Image URL %s received bad status code %s", url, resp.status_code)
 
 
 def download_images(session: requests.Session, image_urls: list[str]) -> list[BytesIO]:
@@ -92,7 +90,7 @@ def convert_images_to_pdf(images: list[BytesIO], document_name: str) -> None:
         img = Image.open(image)
         pdf_images.append(img)
 
-    pdf_images[0].save(f"{document_name}.pdf", save_all=True, append_images=pdf_images[1:]) 
+    pdf_images[0].save(f"{document_name}.pdf", save_all=True, append_images=pdf_images[1:])
 
 
 def fetch_metadata(session: requests.Session, urlobj: urllib.parse.ParseResult) -> dict:
@@ -172,11 +170,11 @@ def parse_args() -> object:
 if __name__ == "__main__":
     args = parse_args()
 
-    log_level = logging.DEBUG if args.verbose else logging.INFO
-    logging.basicConfig(level=log_level)
+    LOG_LEVEL = logging.DEBUG if args.verbose else logging.INFO
+    logging.basicConfig(level=LOG_LEVEL)
 
     if args.url is None or args.url[:len(ISSUU_URL)] != ISSUU_URL:
-        logging.error(f"Invalid URL")
+        logging.error("Invalid URL")
         sys.exit(1)
 
     urlobj = urllib.parse.urlparse(args.url)
