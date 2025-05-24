@@ -1,6 +1,6 @@
 # issuu-dl
 
-Download JPEGs from issuu.com and combine them in a PDF.
+Download JPEGs from https://issuu.com/ and combine them in a PDF.
 
 Based off of https://github.com/Mustkeem324/Issuu-PDF-Downloader/blob/main/main.py.
 
@@ -17,7 +17,7 @@ python3 -m pip install -r requirements.txt
 ## Usage
 
 ```
-usage: downloader.py [-h] -u URL [-v]
+usage: issuu-dl.py [-h] -u URL [-v]
 
 options:
   -h, --help     show this help message and exit
